@@ -1,10 +1,13 @@
 package com.compose.jetpackcompose
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -20,32 +23,49 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JetpackComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Basic Jetpack Compose")
-                }
+                JetpackComposeApp()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Box(contentAlignment = Alignment.Center) {
-        Text(
-            text = "Hello $name!",
-            modifier = modifier
-        )
+fun JetpackComposeApp() {
+    // A surface container using the 'background' color from the theme
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
+        GreetingList(names = DataDummy.sampleName.toMutableList())
     }
 }
 
-@Preview(showBackground = true, name = "Greeting Preview", device = Devices.PIXEL_4)
 @Composable
-fun GreetingPreview() {
-    JetpackComposeTheme {
-        Greeting("Jetpack Compose")
+fun GreetingList(names: MutableList<String>) {
+    if (names.isNotEmpty()) {
+        LazyColumn {
+            items(names) { name ->
+                GreetingItem(name = name)
+            }
+        }
+    } else {
+        Box(contentAlignment = Alignment.Center) {
+            Text("No people to greet :(")
+        }
     }
 }
+
+@Preview(showBackground = true, name = "Jetpack Compose Preview", device = Devices.PIXEL_4)
+@Preview(
+    showBackground = true,
+    name = "Jetpack Compose Preview",
+    device = Devices.PIXEL_4,
+    uiMode = UI_MODE_NIGHT_YES
+)
+@Composable
+fun JetpackComposePreview() {
+    JetpackComposeTheme {
+        JetpackComposeApp()
+    }
+}
+
