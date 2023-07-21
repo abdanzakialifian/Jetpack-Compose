@@ -26,9 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.compose.jetpackcompose.model.Menu
 import com.compose.jetpackcompose.ui.components.CategoryItem
+import com.compose.jetpackcompose.ui.components.HomeSection
 import com.compose.jetpackcompose.ui.components.MenuItem
 import com.compose.jetpackcompose.ui.components.Search
-import com.compose.jetpackcompose.ui.components.SectionText
 import com.compose.jetpackcompose.ui.theme.JetpackComposeTheme
 import com.compose.jetpackcompose.utils.DataDummy
 
@@ -51,12 +51,15 @@ fun JetCoffeeApp() {
     ) {
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             Banner()
-            SectionText(title = stringResource(id = R.string.section_category))
-            CategoryRow()
-            SectionText(title = stringResource(id = R.string.section_favorite_menu))
-            MenuRow(listMenu = DataDummy.dummyMenu)
-            SectionText(title = stringResource(id = R.string.section_best_seller_menu))
-            MenuRow(listMenu = DataDummy.dummyBestSellerMenu)
+            HomeSection(title = stringResource(id = R.string.section_category), content = {
+                CategoryRow()
+            })
+            HomeSection(title = stringResource(id = R.string.section_favorite_menu), content = {
+                MenuRow(listMenu = DataDummy.dummyMenu)
+            })
+            HomeSection(title = stringResource(id = R.string.section_best_seller_menu), content = {
+                MenuRow(listMenu = DataDummy.dummyBestSellerMenu)
+            })
         }
     }
 }
