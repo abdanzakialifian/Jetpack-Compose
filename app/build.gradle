@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.compose.jetpackcompose'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.compose.jetpackcompose"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -56,7 +56,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     // compose
-    implementation platform('androidx.compose:compose-bom:2023.01.00')
+    implementation platform('androidx.compose:compose-bom:2022.10.00')
     androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
     implementation 'androidx.activity:activity-compose:1.7.2'
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
@@ -65,5 +65,5 @@ dependencies {
     implementation 'androidx.compose.ui:ui'
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
-    implementation 'androidx.compose.material3:material3'
+    implementation 'androidx.compose.material3:material3:1.2.0-alpha03'
 }
