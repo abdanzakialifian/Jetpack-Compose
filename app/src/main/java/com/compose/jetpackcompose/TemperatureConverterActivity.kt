@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.compose.jetpackcompose.ui.theme.JetpackComposeTheme
+import com.compose.jetpackcompose.utils.Scale
 
 class TemperatureConverterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,10 +95,54 @@ fun StatelessTemperatureConverter(
     }
 }
 
-private fun convertToFahrenheit(celsius: String) =
-    celsius.toDoubleOrNull()?.let {
-        (it * 9 / 5) + 32
-    }.toString()
+@Composable
+fun TwoWayConverter(modifier: Modifier = Modifier) {
+    var celsius by remember {
+        mutableStateOf("")
+    }
+    var fahrenheit by remember {
+        mutableStateOf("")
+    }
+
+    Column(modifier = modifier.padding(16.dp)) {
+        Text(
+            text = stringResource(id = R.string.two_way_converter),
+            style = MaterialTheme.typography.headlineSmall
+        )
+        GeneralTemperatureInput(scale = Scale.CELSIUS, input = celsius, onValueChange = { value ->
+            celsius = value
+            fahrenheit = convertToFahrenheit(value)
+        })
+        GeneralTemperatureInput(scale = Scale.FAHRENHEIT, input = fahrenheit, onValueChange = { value ->
+            fahrenheit = value
+            celsius = convertToCelsius(value)
+        })
+    }
+}
+
+@Composable
+fun GeneralTemperatureInput(
+    scale: Scale, input: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier
+) {
+    Column(modifier) {
+        OutlinedTextField(
+            value = input,
+            label = {
+                Text(text = stringResource(id = R.string.enter_temperature, scale.scaleName))
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            onValueChange = onValueChange,
+        )
+    }
+}
+
+private fun convertToFahrenheit(celsius: String) = celsius.toDoubleOrNull()?.let {
+    (it * 9 / 5) + 32
+}.toString()
+
+private fun convertToCelsius(fahrenheit: String) = fahrenheit.toDoubleOrNull()?.let {
+    (it - 32) * 5 / 9
+}.toString()
 
 @Composable
 fun TemperatureConverterApp(modifier: Modifier = Modifier) {
@@ -118,6 +163,7 @@ fun TemperatureConverterApp(modifier: Modifier = Modifier) {
                 input = value
                 output = convertToFahrenheit(value)
             })
+        TwoWayConverter()
     }
 }
 
