@@ -15,37 +15,30 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.compose.jetpackcompose.ui.theme.JetpackComposeTheme
 
-class MainActivity : ComponentActivity() {
+class SideEffectActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             JetpackComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Jetpack Compose")
-                }
+                SideEffectApp()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Box(contentAlignment = Alignment.Center) {
-        Text(
-            text = "Hello $name!",
-            modifier = modifier
-        )
+fun SideEffectApp() {
+    // A surface container using the 'background' color from the theme
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
     }
 }
 
 @Preview(showBackground = true, name = "Greeting Preview", device = Devices.PIXEL_4)
 @Composable
-fun GreetingPreview() {
+fun SideEffectAppPreview() {
     JetpackComposeTheme {
-        Greeting("Jetpack Compose")
     }
 }
