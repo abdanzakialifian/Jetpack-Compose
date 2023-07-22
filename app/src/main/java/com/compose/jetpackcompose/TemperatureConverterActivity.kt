@@ -30,13 +30,7 @@ class TemperatureConverterActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JetpackComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    TemperatureConverterApp()
-                }
+                TemperatureConverterApp()
             }
         }
     }
@@ -153,17 +147,23 @@ fun TemperatureConverterApp(modifier: Modifier = Modifier) {
         mutableStateOf("")
     }
 
-    Column {
-        StatefulTemperatureConverter(modifier = modifier)
-        StatelessTemperatureConverter(
-            modifier = modifier,
-            input = input,
-            output = output,
-            onValueChange = { value ->
-                input = value
-                output = convertToFahrenheit(value)
-            })
-        TwoWayConverter()
+    // A surface container using the 'background' color from the theme
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
+        Column {
+            StatefulTemperatureConverter(modifier = modifier)
+            StatelessTemperatureConverter(
+                modifier = modifier,
+                input = input,
+                output = output,
+                onValueChange = { value ->
+                    input = value
+                    output = convertToFahrenheit(value)
+                })
+            TwoWayConverter()
+        }
     }
 }
 
