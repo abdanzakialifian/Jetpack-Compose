@@ -77,7 +77,7 @@ fun SideEffectApp() {
     val context = LocalContext.current
 
     // handle physical back button
-    BackHandler(enabled = drawerState.isOpen, onBack = {
+    BackPressHandler(enabled = drawerState.isOpen, onBackPressed = {
         scope.launch {
             drawerState.close()
         }
