@@ -5,40 +5,47 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.compose.jetpackcompose.ui.theme.JetpackComposeTheme
+import com.compose.jetpackcompose.utils.DataDummy
 
-class MainActivity : ComponentActivity() {
+class HeroesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             JetpackComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Jetpack Compose")
-                }
+                HeroesApp()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Box(contentAlignment = Alignment.Center) {
-        Text(
-            text = "Hello $name!",
-            modifier = modifier
-        )
+fun HeroesApp(modifier: Modifier = Modifier) {
+    // A surface container using the 'background' color from the theme
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
+        Box(modifier = modifier) {
+            LazyColumn {
+                items(DataDummy.heroes, key = { it.id }) { hero ->
+                    HeroListItem(
+                        modifier = Modifier.fillMaxWidth(),
+                        name = hero.name,
+                        photoUrl = hero.photoUrl
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -46,6 +53,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     JetpackComposeTheme {
-        Greeting("Jetpack Compose")
+        HeroesApp()
     }
 }
