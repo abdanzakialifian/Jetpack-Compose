@@ -1,4 +1,4 @@
-package com.compose.jetpackcompose
+package com.compose.jetpackcompose.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.compose.jetpackcompose.R
 import com.compose.jetpackcompose.ui.theme.JetpackComposeTheme
 
 @Composable

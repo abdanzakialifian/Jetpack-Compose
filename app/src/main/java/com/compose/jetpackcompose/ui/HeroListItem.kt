@@ -1,4 +1,4 @@
-package com.compose.jetpackcompose
+package com.compose.jetpackcompose.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row

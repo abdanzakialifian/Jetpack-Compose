@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -28,8 +30,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.compose.jetpackcompose.data.HeroRepository
+import com.compose.jetpackcompose.ui.CharacterHeader
+import com.compose.jetpackcompose.ui.HeroListItem
+import com.compose.jetpackcompose.ui.ScrollToTopButton
 import com.compose.jetpackcompose.ui.theme.JetpackComposeTheme
-import com.compose.jetpackcompose.utils.DataDummy
 import kotlinx.coroutines.launch
 
 class HeroesActivity : ComponentActivity() {
@@ -43,13 +49,20 @@ class HeroesActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HeroesApp(modifier: Modifier = Modifier) {
+fun HeroesApp(
+    modifier: Modifier = Modifier, viewModel: HeroViewModel = viewModel(
+        factory = HeroViewModelFactory(HeroRepository())
+    )
+) {
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
     val showButton by remember {
         derivedStateOf { listState.firstVisibleItemIndex > 0 }
     }
+    val groupedHeroes by viewModel.groupedHeroes.collectAsState()
+
     // A surface container using the 'background' color from the theme
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -57,12 +70,17 @@ fun HeroesApp(modifier: Modifier = Modifier) {
     ) {
         Box(modifier = modifier) {
             LazyColumn(state = listState, contentPadding = PaddingValues(bottom = 80.dp)) {
-                items(DataDummy.heroes, key = { it.id }) { hero ->
-                    HeroListItem(
-                        modifier = Modifier.fillMaxWidth(),
-                        name = hero.name,
-                        photoUrl = hero.photoUrl
-                    )
+                groupedHeroes.forEach { (initial, heroes) ->
+                    stickyHeader {
+                        CharacterHeader(char = initial)
+                    }
+                    items(heroes, key = { it.id }) { hero ->
+                        HeroListItem(
+                            modifier = Modifier.fillMaxWidth(),
+                            name = hero.name,
+                            photoUrl = hero.photoUrl
+                        )
+                    }
                 }
             }
             AnimatedVisibility(
