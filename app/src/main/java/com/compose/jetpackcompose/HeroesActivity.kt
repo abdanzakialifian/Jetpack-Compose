@@ -4,11 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,6 +37,7 @@ import com.compose.jetpackcompose.data.HeroRepository
 import com.compose.jetpackcompose.ui.CharacterHeader
 import com.compose.jetpackcompose.ui.HeroListItem
 import com.compose.jetpackcompose.ui.ScrollToTopButton
+import com.compose.jetpackcompose.ui.SearchBars
 import com.compose.jetpackcompose.ui.theme.JetpackComposeTheme
 import kotlinx.coroutines.launch
 
@@ -62,6 +65,7 @@ fun HeroesApp(
         derivedStateOf { listState.firstVisibleItemIndex > 0 }
     }
     val groupedHeroes by viewModel.groupedHeroes.collectAsState()
+    val query by viewModel.query
 
     // A surface container using the 'background' color from the theme
     Surface(
@@ -70,13 +74,22 @@ fun HeroesApp(
     ) {
         Box(modifier = modifier) {
             LazyColumn(state = listState, contentPadding = PaddingValues(bottom = 80.dp)) {
+                item {
+                    SearchBars(
+                        modifier = Modifier.background(MaterialTheme.colorScheme.primary),
+                        query = query,
+                        onQueryChange = viewModel::search
+                    )
+                }
                 groupedHeroes.forEach { (initial, heroes) ->
                     stickyHeader {
                         CharacterHeader(char = initial)
                     }
                     items(heroes, key = { it.id }) { hero ->
                         HeroListItem(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .animateItemPlacement(tween(durationMillis = 100)),
                             name = hero.name,
                             photoUrl = hero.photoUrl
                         )
