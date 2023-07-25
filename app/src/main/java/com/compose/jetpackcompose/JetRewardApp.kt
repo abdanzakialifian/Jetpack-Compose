@@ -65,7 +65,17 @@ fun JetRewardApp(
                 val id = it.arguments?.getLong("rewardId") ?: -1L
                 DetailScreen(rewardId = id,
                     navigateBack = { navController.navigateUp() },
-                    navigateToCart = {})
+                    navigateToCart = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.Cart.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            restoreState = true
+                            launchSingleTop = true
+                        }
+                    }
+                )
             }
         }
     }
