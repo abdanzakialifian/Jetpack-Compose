@@ -34,9 +34,11 @@ import com.compose.jetpackcompose.ui.theme.JetpackComposeTheme
 
 @Composable
 fun CartScreen(
-    modifier: Modifier = Modifier, viewModel: CartViewModel = viewModel(
+    modifier: Modifier = Modifier,
+    viewModel: CartViewModel = viewModel(
         factory = ViewModelFactory(Injection.provideRepository())
-    )
+    ),
+    onOrderButtonClicked: (String) -> Unit
 ) {
     viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
         when (uiState) {
@@ -48,7 +50,7 @@ fun CartScreen(
                 onProductCountChange = { id, count ->
                     viewModel.updateOrderReward(id, count)
                 },
-                onOrderButtonClicked = { _ -> }
+                onOrderButtonClicked = onOrderButtonClicked
             )
         }
     }
