@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -50,7 +51,7 @@ fun HomeContent(
     onNavigateToDetail: (Long) -> Unit
 ) {
     LazyVerticalGrid(
-        modifier = modifier,
+        modifier = modifier.testTag("RewardList"),
         columns = GridCells.Adaptive(160.dp),
         contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
